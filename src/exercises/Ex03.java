@@ -134,4 +134,11 @@ public class Ex03 {
                 message
         );
     }
+
+    public void gostozo_i_amantes_da_phoda() {
+        IO.println("Cotuendo amants de la phueda: OH madre MIA");
+        for (int i = 1; i <= 5; i++) {
+            IO.println("te culo contienes " + i + " amants de la phueda");
+        }
+    }
 }

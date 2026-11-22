@@ -1,9 +1,7 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    IO.println(String.format("Hello and welcome!"));
+import exercises.Ex03;
 
-    for (int i = 1; i <= 5; i++) {
-        IO.println("i = " + i);
-    }
+void main() {
+    Ex03 question3 = new Ex03();
+
+    question3.gostozo_i_amantes_da_phoda();
 }
