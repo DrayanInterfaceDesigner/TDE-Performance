@@ -15,7 +15,7 @@ public class Ex03 {
 
     public Ex03() {}
 
-    private void run(String mode) throws InterruptedException {
+    public void run(String mode) throws InterruptedException {
         if (Objects.equals(mode, "lock")) {
             this.print("| Lock Mode |\n");
             this.runWithLock();
@@ -40,6 +40,8 @@ public class Ex03 {
 
         Thread WATCHDOG = new Thread(() -> this.deadlockWatchdog(), "WATCHDOG");
         WATCHDOG.setDaemon(true);
+        T1.setDaemon(true);
+        T2.setDaemon(true);
 
         T1.start();
         T2.start();
@@ -47,6 +49,7 @@ public class Ex03 {
 
         T1.join();
         T2.join();
+        WATCHDOG.join();
         this.print("Finished without deadlock.");
     }
 
@@ -74,21 +77,28 @@ public class Ex03 {
 
     private void executeTask(
             String THREAD_NAME,
-            ReentrantLock RESOURCE_A_LOCK, String RESOURCE_A_NAME,
-            ReentrantLock RESOURCE_B_LOCK, String RESOURCE_B_NAME
+            ReentrantLock HELD_LOCK, String HELD_NAME,
+            ReentrantLock WANTED_LOCK, String WANTED_NAME
     )  {
-        this.print(THREAD_NAME + " trying to get " + RESOURCE_A_NAME);
-        RESOURCE_A_LOCK.lock();
+        this.print(THREAD_NAME + " trying to get " + HELD_NAME);
+        HELD_LOCK.lock();
 
         try {
-            this.print(THREAD_NAME + " locked " + RESOURCE_B_NAME + " in.");
+            this.print(THREAD_NAME + " locked " + HELD_NAME);
             this.sleep(this.LOCK_PAUSE_MS);
 
-            this.print(THREAD_NAME + " trying to get " + RESOURCE_B_NAME + " while holding " + RESOURCE_A_NAME);
-            RESOURCE_B_LOCK.lock();
+            this.print(THREAD_NAME + " trying to get " + WANTED_NAME + " while holding " + HELD_NAME);
+            WANTED_LOCK.lock();
 
+            try {
+                this.print(THREAD_NAME + " locked " + WANTED_NAME + " -> done!");
+            } finally {
+                WANTED_LOCK.unlock();
+                this.print(THREAD_NAME + " released " + WANTED_NAME);
+            }
         } finally {
-
+            HELD_LOCK.unlock();
+            this.print(THREAD_NAME + " released " + HELD_NAME);
         }
     }
 
@@ -126,7 +136,7 @@ public class Ex03 {
     }
 
     private synchronized void print(String message) {
-        long ms = (System.nanoTime() - this.PG_START / 1_000_000);
+        long ms = (System.nanoTime() - this.PG_START) / 1_000_000;
         System.out.printf(
                 "[%5d ms] [%-7s] %s%n",
                 ms,
