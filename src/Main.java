@@ -15,5 +15,5 @@ void main() throws InterruptedException {
 //    new Ex03().run("lock");
 //    new Ex03().run("safe");
 
-    //new Ex03().gostozo_i_amantes_da_phoda();
+    new Ex03().gostozo_i_amantes_da_phoda();
 }
