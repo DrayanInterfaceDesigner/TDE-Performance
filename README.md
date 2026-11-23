@@ -1,3 +1,6 @@
+# ME OLHA ME LE ME VE NESSE ESTADO VAI
+> https://youtu.be/62lt_O9XqSM
+
 # como rodar:
 
 precisa de JDK 25 ou mais novo (`openjdk-27` no `.idea/misc.xml`).
@@ -19,3 +22,4 @@ void main() throws InterruptedException {
     new Ex03().run();           // atividade 2 liberadinha....
 }
 ```
+
